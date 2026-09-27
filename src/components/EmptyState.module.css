@@ -1,0 +1,30 @@
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 100dvh;
+  padding: 40px;
+  text-align: center;
+  background: #17151a;
+  color: #fff;
+}
+
+.icon {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.message {
+  margin: 0;
+  max-width: 380px;
+  color: #a0a0a0;
+  font-size: 14px;
+}

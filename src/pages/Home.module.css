@@ -1,8 +1,0 @@
-.grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 30px;
-  padding: 40px;
-  background: #17151a;
-  min-height: 100dvh;
-}
