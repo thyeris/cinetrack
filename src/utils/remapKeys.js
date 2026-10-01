@@ -1,21 +1,15 @@
-export function remapKeys(item) {
-  const value = item.imdbRating;
-  const num = Number(value);
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-  let rating;
-  if (value === "N/A") {
-    rating = "N/A";
-  } else if (value !== null && value !== undefined && value !== "" && !isNaN(num) && num >= 0) {
-    rating = num;
-  } else {
-    rating = null;
-  }
+export function remapKeys(item) {
+  const year = item.release_date ? item.release_date.slice(0, 4) : "";
+  const poster = item.poster_path ? `${IMAGE_BASE_URL}${item.poster_path}` : null;
+  const rating = item.vote_average > 0 ? item.vote_average : null;
 
   return {
-    id: item.imdbID,
-    title: item.Title,
-    year: item.Year,
-    poster: item.Poster,
+    id: item.id,
+    title: item.title,
+    year,
+    poster,
     rating,
   };
 }
