@@ -28,3 +28,25 @@
   color: #a0a0a0;
   font-size: 14px;
 }
+
+.action {
+  margin-top: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: #c9a24b;
+  color: #221f26;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.action:hover {
+  filter: brightness(1.1);
+}
+
+.action:focus-visible {
+  outline: 2px solid #ede7dc;
+  outline-offset: 3px;
+}

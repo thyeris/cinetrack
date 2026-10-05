@@ -1,0 +1,67 @@
+.card {
+  --card-bg: #221f26;
+  --card-border: #322e38;
+  --shine-base: #2e2a34;
+  --shine-light: #3b3643;
+
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+  height: fit-content;
+}
+
+.poster,
+.title,
+.year {
+  background: linear-gradient(
+    90deg,
+    var(--shine-base) 25%,
+    var(--shine-light) 50%,
+    var(--shine-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+}
+
+.info {
+  padding: 22px 14px 16px;
+  min-height: 110px;
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.title {
+  height: 16px;
+  width: 80%;
+  border-radius: 4px;
+}
+
+.year {
+  height: 12px;
+  width: 30%;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poster,
+  .title,
+  .year {
+    animation: none;
+  }
+}
