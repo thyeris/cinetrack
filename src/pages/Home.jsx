@@ -1,13 +1,13 @@
 import EmptyState from "../components/EmptyState";
 import MovieGrid from "../components/MovieGrid";
+import MovieGridSkeleton from "../components/MovieGridSkeleton";
 import { useMovies } from "../hooks/useMovies";
-import styles from "./Home.module.css";
 
 function Home() {
   const { movies, loading, error } = useMovies();
 
   if (loading) {
-    return <p className={styles.status}>Carregando filmes…</p>;
+    return <MovieGridSkeleton />;
   }
 
   if (error) {
