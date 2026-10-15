@@ -1,25 +1,46 @@
+import axios from "axios";
 import { remapKeys } from "../utils/remapKeys";
+import { MoviesError, kindFromStatus } from "./moviesError";
 
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
-const BASE_URL = "https://api.themoviedb.org/3";
 
-export async function fetchMovies() {
+const tmdb = axios.create({
+  baseURL: "https://api.themoviedb.org/3",
+  headers: {
+    accept: "application/json",
+    Authorization: `Bearer ${TOKEN}`,
+  },
+  params: {
+    language: "pt-BR",
+  },
+});
+
+export async function fetchMovies({ signal } = {}) {
   if (!TOKEN) {
-    throw new Error("VITE_TMDB_TOKEN não encontrado.");
+    throw new MoviesError("unknown", { cause: "VITE_TMDB_TOKEN não encontrado." });
   }
 
-  const response = await fetch(`${BASE_URL}/movie/popular?language=pt-BR&page=1`, {
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${TOKEN}`,
-    },
-  });
+  let response;
+  try {
+    response = await tmdb.get("/movie/popular", {
+      params: { page: 1 },
+      signal,
+    });
+  } catch (err) {
+    if (axios.isCancel(err)) throw err;
 
-  if (!response.ok) {
-    throw new Error(`Erro ao buscar filmes (status ${response.status})`);
+    if (err.response) {
+      throw new MoviesError(kindFromStatus(err.response.status), {
+        status: err.response.status,
+      });
+    }
+
+    throw new MoviesError("network", { cause: err });
   }
 
-  const data = await response.json();
-
-  return data.results.map(remapKeys);
+  try {
+    return response.data.results.map(remapKeys);
+  } catch (err) {
+    throw new MoviesError("unknown", { cause: err });
+  }
 }
