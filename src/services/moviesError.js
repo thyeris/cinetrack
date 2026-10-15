@@ -10,10 +10,6 @@ const USER_MESSAGES = {
 
 export const GENERIC_ERROR_MESSAGE = USER_MESSAGES.unknown;
 
-/**
- * Erro do serviço de filmes. `message` é técnico (vai para o console);
- * `userMessage` é o texto seguro para exibir na tela.
- */
 export class MoviesError extends Error {
   constructor(kind, { status, cause } = {}) {
     super(`[fetchMovies] ${kind}${status ? ` (status ${status})` : ""}`, {
@@ -26,7 +22,6 @@ export class MoviesError extends Error {
   }
 }
 
-/** Nunca devolve texto técnico: qualquer erro desconhecido vira a mensagem genérica. */
 export function getUserMessage(error) {
   return error instanceof MoviesError
     ? error.userMessage

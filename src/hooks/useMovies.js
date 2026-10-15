@@ -18,7 +18,7 @@ export function useMovies() {
       })
       .catch((err) => {
         if (controller.signal.aborted) return;
-        // O detalhe técnico fica só no console; a UI usa a mensagem amigável.
+
         console.error(err);
         setError(err);
         setLoading(false);
