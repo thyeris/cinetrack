@@ -1,8 +1,19 @@
+import axios from "axios";
 import { remapKeys } from "../utils/remapKeys";
 import { MoviesError, kindFromStatus } from "./moviesError";
 
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
-const BASE_URL = "https://api.themoviedb.org/3";
+
+const tmdb = axios.create({
+  baseURL: "https://api.themoviedb.org/3",
+  headers: {
+    accept: "application/json",
+    Authorization: `Bearer ${TOKEN}`,
+  },
+  params: {
+    language: "pt-BR",
+  },
+});
 
 export async function fetchMovies({ signal } = {}) {
   if (!TOKEN) {
@@ -11,27 +22,24 @@ export async function fetchMovies({ signal } = {}) {
 
   let response;
   try {
-    response = await fetch(`${BASE_URL}/movie/popular?language=pt-BR&page=1`, {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${TOKEN}`,
-      },
+    response = await tmdb.get("/movie/popular", {
+      params: { page: 1 },
       signal,
     });
   } catch (err) {
-    if (err?.name === "AbortError") throw err;
+    if (axios.isCancel(err)) throw err;
+
+    if (err.response) {
+      throw new MoviesError(kindFromStatus(err.response.status), {
+        status: err.response.status,
+      });
+    }
+
     throw new MoviesError("network", { cause: err });
   }
 
-  if (!response.ok) {
-    throw new MoviesError(kindFromStatus(response.status), {
-      status: response.status,
-    });
-  }
-
   try {
-    const data = await response.json();
-    return data.results.map(remapKeys);
+    return response.data.results.map(remapKeys);
   } catch (err) {
     throw new MoviesError("unknown", { cause: err });
   }
