@@ -50,3 +50,7 @@
   outline: 2px solid #ede7dc;
   outline-offset: 3px;
 }
+
+.compact {
+  min-height: 60dvh;
+}
